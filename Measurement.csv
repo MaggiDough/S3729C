@@ -1,4 +1,4 @@
-Name,Age,Weight_kg,Height_cm,BMI,Waist_cm,Hip_cm,WaistHipRatio,BMR_kcal ,TotalBodyWater_kg,TotalBodyWater_Percentage,FatMass_kg,Fat_Percentage,FatFreeMass_kg,MuscleMass_kg,BoneMass_kg,VisceralFat,MetabolicAge,RightArm_kg,LeftArm_kg,RightLeg_kg,LeftLeg_kg,Trunk_kg
+Name,Age,Weight_kg,Height_cm,BMI,Waist_cm,Hip_cm,WaistHipRatio,BMR_kcal ,TBW_kg,TBW_Percent,FM_kg,Fat_Percent,FFM_kg,MM_kg,BM_kg,VisceralFat,MetabolicAge,RA_kg,LA_kg,RL_kg,LL_kg,Trunk_kg
 Ang Siew Geok,66,65.5,160.5,25.4,90.5,102,0.89,1221,31.8,48.5,24.2,36.9,41.3,38.8,2.5,9,57,1.9,2,7.2,7.6,20.1
 Bettina Tay,66,61.6,156,25.3,92,101,0.91,1156,29.3,47.6,22.3,36.2,39.3,37,2.3,8,56,1.8,1.7,6.8,6.8,19.9
 Chan Yan Yew,75,67.6,172,22.9,93,98,0.95,1324,32.6,48.2,18.7,27.7,48.9,46.4,2.6,12,63,2.3,2.1,8.1,8.6,25.3
