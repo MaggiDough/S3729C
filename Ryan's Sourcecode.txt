@@ -1,0 +1,166 @@
+# Load packages ----------------------------------------------------------------
+
+
+
+library(shiny)
+library(ggplot2)
+library(tools)
+library(shinythemes)
+library(dplyr)
+library(DT)
+
+
+# Load data --------------------------------------------------------------------
+
+
+
+Measurements <- read.csv(file = "https://raw.githubusercontent.com/MaggiDough/S3729C/main/Measurements.csv", header = TRUE, sep = ",")
+
+
+
+# Define UI --------------------------------------------------------------------
+
+
+
+ui <- fluidPage(
+  shinythemes::themeSelector(),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        inputId = "y",
+        label = "Y-axis:",
+        choices = c(
+          "Age" = "Age",
+          "Weight (kg)" = "Weight_kg",
+          "Height (cm)" = "Height_cm",
+          "BMI" = "BMI",
+          "Waist (cm)" = "Waist_cm",
+          "Hip (cm)" = "Hip_cm",
+          "Waist Hip Ratio" = "WaistHipRatio",
+          "BMR (kcal)" = "BMR_kcal",
+          "Total Body Water (kg)" = "TBW_kg",
+          "Total Body Water (%)" = "TBW_Percent",
+          "Fat Mass (kg)" = "FM_kg",
+          "Fat (%)" = "Fat_Percent",
+          "Fat Free Mass (kg)" = "FFM_kg",
+          "Muscle Mass (kg)" = "MM_kg",
+          "Bone Mass (kg)" = "BM_kg",
+          "Visceral Fat" = "VisceralFat",
+          "Metabolic Age" = "Metabolic Age",
+          "Right Arm Muscle (kg)" = "RA_kg",
+          "Left Arm Muscle (kg)" = "LA_kg",
+          "Right Leg Muscle (kg)" = "RL_kg",
+          "Leg Leg Muscle (kg)" = "LL_kg",
+          "Trunk Muscle (kg)" = "Trunk_kg"
+        ),
+        selected = "Age"
+      ),
+      
+      selectInput(
+        inputId = "x",
+        label = "X-axis:",
+        choices = c(
+          "Age" = "Age",
+          "Weight (kg)" = "Weight_kg",
+          "Height (cm)" = "Height_cm",
+          "BMI" = "BMI",
+          "Waist (cm)" = "Waist_cm",
+          "Hip (cm)" = "Hip_cm",
+          "Waist Hip Ratio" = "WaistHipRatio",
+          "BMR (kcal)" = "BMR_kcal",
+          "Total Body Water (kg)" = "TBW_kg",
+          "Total Body Water (%)" = "TBW_Percent",
+          "Fat Mass (kg)" = "FM_kg",
+          "Fat (%)" = "Fat_Percent",
+          "Fat Free Mass (kg)" = "FFM_kg",
+          "Muscle Mass (kg)" = "MM_kg",
+          "Bone Mass (kg)" = "BM_kg",
+          "Visceral Fat" = "VisceralFat",
+          "Metabolic Age" = "Metabolic Age",
+          "Right Arm Muscle (kg)" = "RA_kg",
+          "Left Arm Muscle (kg)" = "LA_kg",
+          "Right Leg Muscle (kg)" = "RL_kg",
+          "Leg Leg Muscle (kg)" = "LL_kg",
+          "Trunk Muscle (kg)" = "Trunk_kg"
+        ),
+        selected = "Weight_kg"
+      ),
+      
+      selectInput(
+        inputId = "z",
+        label = "Color by:",
+        choices = c(
+          "Gender" = "Gender",
+          "Race" = "Race",
+          "Intake" = "Intake"
+        ),
+        selected = "Gender"
+      ),
+      
+      sliderInput(
+        inputId = "alpha",
+        label = "Alpha:",
+        min = 0, max = 1,
+        value = 0.5
+      ),
+      
+      sliderInput(
+        inputId = "size",
+        label = "Size:",
+        min = 0, max = 5,
+        value = 2
+      ),
+      
+      textInput(
+        inputId = "plot_title",
+        label = "Plot title",
+        placeholder = "Enter text to be used as plot title"
+      ),
+      
+      actionButton(
+        inputId = "update_plot_title",
+        label = "Update plot title"
+      )
+    ),
+    
+    mainPanel(
+      plotOutput(outputId = "scatterplot", brush = brushOpts(id = "plot_brush")),
+      DT::dataTableOutput(outputId = "measurementstable"),
+      br()
+    )
+  )
+)
+
+
+
+# Define server ----------------------------------------------------------------
+
+
+
+server <- function(input, output, session) {
+  
+  new_plot_title <- eventReactive(
+    eventExpr = input$update_plot_title,
+    valueExpr = {
+      toTitleCase(input$plot_title)
+    })
+  
+  output$scatterplot <- renderPlot({
+    ggplot(data = Measurements, aes_string(x = input$x, y = input$y, color = input$z)) +
+      geom_point(alpha = input$alpha, size = input$size) +
+      labs(title = new_plot_title())
+  })
+  
+  output$measurementstable <- renderDataTable({
+    brushedPoints(Measurements, brush = input$plot_brush) %>%
+      select(Name,Gender,Race,Intake,BM_kg,MM_kg)
+  })
+}
+
+
+
+# Create the Shiny app object --------------------------------------------------
+
+
+
+shinyApp(ui = ui, server = server)
