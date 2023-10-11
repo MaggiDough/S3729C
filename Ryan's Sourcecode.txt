@@ -46,7 +46,7 @@ ui <- fluidPage(
           "Muscle Mass (kg)" = "MM_kg",
           "Bone Mass (kg)" = "BM_kg",
           "Visceral Fat" = "VisceralFat",
-          "Metabolic Age" = "Metabolic Age",
+          "Metabolic Age" = "MetabolicAge",
           "Right Arm Muscle (kg)" = "RA_kg",
           "Left Arm Muscle (kg)" = "LA_kg",
           "Right Leg Muscle (kg)" = "RL_kg",
@@ -76,7 +76,7 @@ ui <- fluidPage(
           "Muscle Mass (kg)" = "MM_kg",
           "Bone Mass (kg)" = "BM_kg",
           "Visceral Fat" = "VisceralFat",
-          "Metabolic Age" = "Metabolic Age",
+          "Metabolic Age" = "MetabolicAge",
           "Right Arm Muscle (kg)" = "RA_kg",
           "Left Arm Muscle (kg)" = "LA_kg",
           "Right Leg Muscle (kg)" = "RL_kg",
@@ -153,7 +153,7 @@ server <- function(input, output, session) {
   
   output$measurementstable <- renderDataTable({
     brushedPoints(Measurements, brush = input$plot_brush) %>%
-      select(Name,Gender,Race,Intake,BM_kg,MM_kg)
+      select(Name,Gender,Race,Intake,MetabolicAge,RA_kg,LA_kg,RL_kg,LL_kg,Trunk_kg)
   })
 }
 
